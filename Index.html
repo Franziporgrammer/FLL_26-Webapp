@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArcheoHub - Archaeological Project Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 60px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0;
+            list-style: none;
+        }
+
+        .nav-links li a {
+            display: block;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: all 0.2s;
+            border-radius: 6px;
+        }
+
+        .nav-links li a:hover {
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .nav-links li a.active {
+            background-color: #1a1a1a;
+            color: white;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            width: 300px;
+        }
+
+        .search-bar input {
+            border: none;
+            background: none;
+            outline: none;
+            width: 100%;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .search-bar input::placeholder {
+            color: #999;
+        }
+
+        .upload-btn {
+            padding: 0.6rem 1.2rem;
+            background-color: #1a1a1a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .upload-btn:hover {
+            background-color: #333;
+        }
+
+        .user-icon {
+            width: 36px;
+            height: 36px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Dashboard */
+        .welcome-section h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-section p {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        /* Projects Section */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .section-subtitle {
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 0.3rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            position: relative;
+        }
+
+        .project-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        .status-active {
+            background-color: #d4edda !important;
+            color: #155724;
+        }
+
+        .status-planning {
+            background-color: #fff3cd !important;
+            color: #856404;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .project-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .project-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #f0f0f0;
+            margin-top: 1rem;
+        }
+
+        .project-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .author-avatar {
+            width: 24px;
+            height: 24px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .project-stats {
+            display: flex;
+            gap: 1rem;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        /* Activity Feed */
+        .activity-feed {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .activity-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-header {
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .activity-author {
+            font-weight: 600;
+        }
+
+        .activity-project {
+            display: block;
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+        }
+
+        .activity-time {
+            color: #999;
+            font-size: 0.8rem;
+            float: right;
+        }
+
+        /* People Cards */
+        .people-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .person-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .person-avatar {
+            width: 80px;
+            height: 80px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 auto 1rem;
+        }
+
+        .person-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .person-title {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .person-info {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .specializations {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .spec-tag {
+            padding: 0.4rem 0.8rem;
+            background-color: #f5f5f5;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .person-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1.5rem;
+            padding: 1rem 0;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .person-bio {
+            text-align: left;
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .person-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.7rem 1rem;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        .btn-primary {
+            background-color: #1a1a1a;
+            color: white;
+            border-color: #1a1a1a;
+        }
+
+        .btn-primary:hover {
+            background-color: #333;
+        }
+
+        /* Upload Form */
+        .upload-container {
+            max-width: 1200px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            color: #333;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 2rem;
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .form-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-section-subtitle {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #1a1a1a;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .upload-area {
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-area:hover {
+            border-color: #1a1a1a;
+            background-color: #fafafa;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .keyword-input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .keyword-input-group .form-input {
+            flex: 1;
+        }
+
+        .add-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .add-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-input {
+            flex: 1;
+            padding: 0.7rem 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .filter-select {
+            padding: 0.7rem 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: white;
+            cursor: pointer;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .view-btn.active {
+            background-color: #1a1a1a;
+            color: white;
+        }
+
+        .results-count {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .search-bar {
+                width: 200px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .people-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">ArcheoHub</div>
+            <ul class="nav-links">
+                <li><a href="#" data-page="dashboard" class="nav-link active">Dashboard</a></li>
+                <li><a href="#" data-page="projects" class="nav-link">Projects</a></li>
+                <li><a href="#" data-page="people" class="nav-link">People</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="search-bar">
+                    <span>🔍</span>
+                    <input type="text" placeholder="Search projects, people, or artifacts...">
+                </div>
+                <button class="upload-btn" onclick="navigateTo('upload')">Upload</button>
+                <div class="user-icon">D</div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Dashboard Page -->
+        <div id="dashboard" class="page active">
+            <div class="welcome-section">
+                <h1>Welcome back!</h1>
+                <p>Here's what's happening with your archaeological projects today.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Active Projects</span>
+                        <div class="stat-icon" style="background-color: #d4edda; color: #155724;">📁</div>
+                    </div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-change">+2 from last month</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Total Artifacts</span>
+                        <div class="stat-icon" style="background-color: #cfe2ff; color: #084298;">📊</div>
+                    </div>
+                    <div class="stat-value">1,847</div>
+                    <div class="stat-change">+156 this month</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Team Members</span>
+                        <div class="stat-icon" style="background-color: #e7d4f8; color: #6f42c1;">👥</div>
+                    </div>
+                    <div class="stat-value">34</div>
+                    <div class="stat-change">+3 new members</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Completed Projects</span>
+                        <div class="stat-icon" style="background-color: #fff3cd; color: #856404;">📦</div>
+                    </div>
+                    <div class="stat-value">8</div>
+                    <div class="stat-change">This year</div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div>
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Recent Projects</h2>
+                            <p class="section-subtitle">Your latest archaeological projects and their progress</p>
+                        </div>
+                    </div>
+
+                    <div class="projects-grid">
+                        <div class="project-card">
+                            <div style="position: relative;">
+                                <img src="https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&h=400&fit=crop" alt="Roman Villa" class="project-image">
+                                <span class="project-status status-active">active</span>
+                            </div>
+                            <div class="project-content">
+                                <h3 class="project-title">Ancient Roman Villa Excavation</h3>
+                                <p class="project-description">Uncovering a well-preserved Roman villa with intricate mosaics and artifacts from the 2nd century AD.</p>
+                                <div class="project-meta">
+                                    <span>📍 Pompeii, Italy</span>
+                                    <span>📅 2024-01-15</span>
+                                </div>
+                                <div class="project-footer">
+                                    <div class="project-author">
+                                        <div class="author-avatar">D</div>
+                                        <span>Dr. Maria Santos</span>
+                                    </div>
+                                    <div class="project-stats">
+                                        <span>👥 8</span>
+                                        <span>👁 234</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="project-card">
+                            <div style="position: relative;">
+                                <img src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&h=400&fit=crop" alt="Medieval Pottery" class="project-image">
+                                <span class="project-status status-active">active</span>
+                            </div>
+                            <div class="project-content">
+                                <h3 class="project-title">Medieval Pottery Analysis</h3>
+                                <p class="project-description">Comprehensive study of ceramic artifacts from a 13th-century settlement site.</p>
+                                <div class="project-meta">
+                                    <span>📍 Canterbury, UK</span>
+                                    <span>📅 2024-02-01</span>
+                                </div>
+                                <div class="project-footer">
+                                    <div class="project-author">
+                                        <div class="author-avatar">P</div>
+                                        <span>Prof. James Wright</span>
+                                    </div>
+                                    <div class="project-stats">
+                                        <span>👥 5</span>
+                                        <span>👁 156</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Recent Activity</h2>
+                            <p class="section-subtitle">Latest updates from your team</p>
+                        </div>
+                    </div>
+
+                    <div class="activity-feed">
+                        <div class="activity-item">
+                            <div class="activity-header">
+                                <span class="activity-author">Dr. Maria Santos</span> uploaded 15 new artifact photos
+                                <span class="activity-time">2 hours ago</span>
+                            </div>
+                            <span class="activity-project">Roman Villa Excavation</span>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-header">
+                                <span class="activity-author">Prof. James Wright</span> completed 3D scanning session
+                                <span class="activity-time">4 hours ago</span>
+                            </div>
+                            <span class="activity-project">Medieval Pottery Analysis</span>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-header">
+                                <span class="activity-author">Dr. Sarah Chen</span> published field report
+                                <span class="activity-time">1 day ago</span>
+                            </div>
+                            <span class="activity-project">Bronze Age Settlement</span>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-header">
+                                <span class="activity-author">Alex Johnson</span> joined project team
+                                <span class="activity-time">2 days ago</span>
+                            </div>
+                            <span class="activity-project">Roman Villa Excavation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Page -->
+        <div id="projects" class="page">
+            <div class="section-header">
+                <div>
+                    <h1 class="section-title">Archaeological Projects</h1>
+                    <p class="section-subtitle">Explore ongoing and completed archaeological research projects</p>
+                </div>
+                <div class="view-toggle">
+                    <button class="view-btn active">⊞</button>
+                    <button class="view-btn">☰</button>
+                </div>
+            </div>
+
+            <div class="filters">
+                <input type="text" class="filter-input" placeholder="Search projects, locations, or descriptions...">
+                <select class="filter-select">
+                    <option>All Status</option>
+                    <option>Active</option>
+                    <option>Planning</option>
+                    <option>Completed</option>
+                </select>
+            </div>
+
+            <p class="results-count">Showing 6 of 6 projects</p>
+
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&h=400&fit=crop" alt="Roman Villa" class="project-image">
+                        <span class="project-status status-active">active</span>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Ancient Roman Villa Excavation</h3>
+                        <p class="project-description">Uncovering a well-preserved Roman villa with intricate mosaics and artifacts from the 2nd century AD.</p>
+                        <div class="project-meta">
+                            <span>📍 Pompeii, Italy</span>
+                            <span>📅 2024-01-15</span>
+                        </div>
+                        <div class="project-footer">
+                            <div class="project-author">
+                                <div class="author-avatar">D</div>
+                                <span>Dr. Maria Santos</span>
+                            </div>
+                            <div class="project-stats">
+                                <span>👥 8</span>
+                                <span>👁 234</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&h=400&fit=crop" alt="Medieval Pottery" class="project-image">
+                        <span class="project-status status-active">active</span>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Medieval Pottery Analysis</h3>
+                        <p class="project-description">Comprehensive study of ceramic artifacts from a 13th-century settlement site.</p>
+                        <div class="project-meta">
+                            <span>📍 Canterbury, UK</span>
+                            <span>📅 2024-02-01</span>
+                        </div>
+                        <div class="project-footer">
+                            <div class="project-author">
+                                <div class="author-avatar">P</div>
+                                <span>Prof. James Wright</span>
+                            </div>
+                            <div class="project-stats">
+                                <span>👥 5</span>
+                                <span>👁 156</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1628018743-46be1e611e87?w=800&h=400&fit=crop" alt="Bronze Age" class="project-image">
+                        <span class="project-status status-planning">planning</span>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Bronze Age Settlement Survey</h3>
+                        <p class="project-description">Systematic survey and documentation of Bronze Age remains using modern archaeological techniques.
+                            < /p>
+<div class="project-meta">
+<span>📍 Stonehenge, UK</span>
+<span>📅 2024-01-20</span>
+</div>
+<div class="project-footer">
+<div class="project-author">
+<div class="author-avatar">D</div>
+<span>Dr. Sarah Chen</span>
+</div>
+<div class="project-stats">
+<span>👥 12</span>
+<span>👁 89</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+    <!-- People Page -->
+    <div id="people" class="page">
+        <div class="section-header">
+            <div>
+                <h1 class="section-title">Archaeological Community</h1>
+                <p class="section-subtitle">Connect with archaeologists and researchers from around the world</p>
+            </div>
+        </div>
+
+        <div class="filters">
+            <input type="text" class="filter-input" placeholder="Search by name, title, institution, or specialization...">
+            <select class="filter-select">
+                <option>All Specializations</option>
+                <option>Roman Archaeology</option>
+                <option>Medieval Studies</option>
+                <option>Digital Documentation</option>
+            </select>
+        </div>
+
+        <p class="results-count">Showing 6 of 6 researchers</p>
+
+        <div class="people-grid">
+            <div class="person-card">
+                <div class="person-avatar">DMS</div>
+                <h3 class="person-name">Dr. Maria Santos</h3>
+                <p class="person-title">Senior Archaeologist</p>
+
+                <div class="person-info">
+                    <div class="info-row">
+                        <span class="info-label">Institution:</span>
+                        <span>University of Rome</span>
+                    </div>
+                    <div class="info-row">
+                        <span>📍 Rome, Italy</span>
+                    </div>
+                    <div class="info-row">
+                        <span>✉️ maria.santos@university.edu</span>
+                    </div>
+                </div>
+
+                <div>
+                    <strong style="font-size: 0.9rem;">Specializations:</strong>
+                    <div class="specializations">
+                        <span class="spec-tag">Roman Archaeology</span>
+                        <span class="spec-tag">Ancient Art</span>
+                        <span class="spec-tag">Excavation</span>
+                    </div>
+                </div>
+
+                <div class="person-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">Projects</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">24</div>
+                        <div class="stat-label">Papers</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">15 years</div>
+                        <div class="stat-label">Experience</div>
+                    </div>
+                </div>
+
+                <p class="person-bio">Specialist in Roman-era excavations with extensive experience in Mediterranean archaeological sites.</p>
+
+                <div class="person-actions">
+                    <button class="btn">View Profile</button>
+                    <button class="btn">✉️</button>
+                </div>
+            </div>
+
+            <div class="person-card">
+                <div class="person-avatar">PJW</div>
+                <h3 class="person-name">Prof. James Wright</h3>
+                <p class="person-title">Professor of Medieval Archaeology</p>
+
+                <div class="person-info">
+                    <div class="info-row">
+                        <span class="info-label">Institution:</span>
+                        <span>Oxford University</span>
+                    </div>
+                    <div class="info-row">
+                        <span>📍 Oxford, UK</span>
+                    </div>
+                    <div class="info-row">
+                        <span>✉️ j.wright@oxford.ac.uk</span>
+                    </div>
+                </div>
+
+                <div>
+                    <strong style="font-size: 0.9rem;">Specializations:</strong>
+                    <div class="specializations">
+                        <span class="spec-tag">Medieval Studies</span>
+                        <span class="spec-tag">Pottery Analysis</span>
+                        <span class="spec-tag">Settlement Archaeology</span>
+                    </div>
+                </div>
+
+                <div class="person-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Projects</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">45</div>
+                        <div class="stat-label">Papers</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">22 years</div>
+                        <div class="stat-label">Experience</div>
+                    </div>
+                </div>
+
+                <p class="person-bio">Leading expert in medieval settlement patterns and ceramic analysis across Western Europe.</p>
+
+                <div class="person-actions">
+                    <button class="btn">View Profile</button>
+                    <button class="btn">✉️</button>
+                </div>
+            </div>
+
+            <div class="person-card">
+                <div class="person-avatar">DSC</div>
+                <h3 class="person-name">Dr. Sarah Chen</h3>
+                <p class="person-title">Digital Archaeologist</p>
+
+                <div class="person-info">
+                    <div class="info-row">
+                        <span class="info-label">Institution:</span>
+                        <span>Cambridge University</span>
+                    </div>
+                    <div class="info-row">
+                        <span>📍 Cambridge, UK</span>
+                    </div>
+                    <div class="info-row">
+                        <span>✉️ s.chen@cam.ac.uk</span>
+                    </div>
+                </div>
+
+                <div>
+                    <strong style="font-size: 0.9rem;">Specializations:</strong>
+                    <div class="specializations">
+                        <span class="spec-tag">Digital Documentation</span>
+                        <span class="spec-tag">3D Scanning</span>
+                        <span class="spec-tag">GIS</span>
+                    </div>
+                </div>
+
+                <div class="person-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">6</div>
+                        <div class="stat-label">Projects</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">18</div>
+                        <div class="stat-label">Papers</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">8 years</div>
+                        <div class="stat-label">Experience</div>
+                    </div>
+                </div>
+
+                <p class="person-bio">Pioneer in digital archaeology techniques, specializing in 3D documentation and virtual reality applications.</p>
+
+                <div class="person-actions">
+                    <button class="btn">View Profile</button>
+                    <button class="btn">✉️</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Page -->
+    <div id="upload" class="page">
+        <div class="upload-container">
+            <a href="#" class="back-link" onclick="navigateTo('projects'); return false;">
+                ← Back to Projects
+            </a>
+
+            <div class="welcome-section">
+                <h1>Upload New Project</h1>
+                <p>Share your archaeological project with the community</p>
+            </div>
+
+            <div class="form-grid">
+                <div>
+                    <div class="form-section">
+                        <h2 class="form-section-title">Project Information</h2>
+                        <p class="form-section-subtitle">Basic details about your archaeological project</p>
+
+                        <div class="form-group">
+                            <label class="form-label">Project Title</label>
+                            <input type="text" class="form-input" placeholder="Enter project title...">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-textarea" placeholder="Describe your project, its objectives, and findings..."></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Location</label>
+                                <input type="text" class="form-input" placeholder="Project location...">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Category</label>
+                                <select class="form-select">
+                                    <option>Select category</option>
+                                    <option>Roman Archaeology</option>
+                                    <option>Medieval Studies</option>
+                                    <option>Bronze Age</option>
+                                    <option>Pottery Analysis</option>
+                                    <option>Settlement Survey</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Start Date</label>
+                                <input type="date" class="form-input">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">End Date</label>
+                                <input type="date" class="form-input">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <select class="form-select">
+                                    <option>Project status</option>
+                                    <option>Planning</option>
+                                    <option>Active</option>
+                                    <option>Completed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Keywords</label>
+                            <div class="keyword-input-group">
+                                <input type="text" class="form-input" placeholder="Add keyword...">
+                                <button class="add-btn">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="form-section">
+                        <h2 class="form-section-title">📷 Images</h2>
+                        <p class="form-section-subtitle">Upload photos from your excavation</p>
+
+                        <div class="upload-area">
+                            <div class="upload-icon">⬆</div>
+                            <p class="upload-text">Click to upload images or drag and drop</p>
+                        </div>
+                    </div>
+
+                    <div class="form-section" style="margin-top: 1.5rem;">
+                        <h2 class="form-section-title">🎲 3D Models</h2>
+                        <p class="form-section-subtitle">Upload 3D scans and models</p>
+
+                        <div class="upload-area">
+                            <div class="upload-icon">⬆</div>
+                            <p class="upload-text">Upload OBJ, PLY, STL or DAE files</p>
+                        </div>
+                    </div>
+
+                    <div class="form-section" style="margin-top: 1.5rem;">
+                        <h2 class="form-section-title">📄 Documents</h2>
+                        <p class="form-section-subtitle">Upload reports and documentation</p>
+
+                        <div class="upload-area">
+                            <div class="upload-icon">⬆</div>
+                            <p class="upload-text">Upload PDF, DOC or other documents</p>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 1.5rem; padding: 1rem;">
+                        Create Project
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Navigation
+    function navigateTo(page) {
+        // Hide all pages
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        
+        // Show selected page
+        document.getElementById(page).classList.add('active');
+        
+        // Update nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+            if (link.dataset.page === page) {
+                link.classList.add('active');
+            }
+        });
+
+        // Scroll to top
+        window.scrollTo(0, 0);
+    }
+
+    // Nav link click handlers
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            navigateTo(link.dataset.page);
+        });
+    });
+
+    // View toggle buttons
+    document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+</script>
+</body>
+</html>
