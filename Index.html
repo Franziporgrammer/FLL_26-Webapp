@@ -796,7 +796,7 @@
                     </div>
 
                     <div class="projects-grid">
-                        <div class="project-card">
+                        <div class="project-card" onclick="umleitung()">
                             <div style="position: relative;">
                                 <img src="https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&h=400&fit=crop" alt="Roman Villa" class="project-image">
                                 <span class="project-status status-active">active</span>
@@ -1291,6 +1291,14 @@
 
 <script>
     // Navigation
+
+    
+function umleitung() {
+    window.location.href = "project.html";
+
+}
+
+
     function navigateTo(page) {
         // Hide all pages
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
