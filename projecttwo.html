@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duisenburghaus</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 60px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0;
+            list-style: none;
+        }
+
+        .nav-links li a {
+            display: block;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: all 0.2s;
+            border-radius: 6px;
+        }
+
+        .nav-links li a:hover {
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-icon {
+            width: 36px;
+            height: 36px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Back Button */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #333;
+        }
+
+        /* Project Header */
+        .project-header {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .project-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-title-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 2rem;
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 1rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .project-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 2rem;
+        }
+
+        .project-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background-color: #1a1a1a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #333;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: #1a1a1a;
+            border: 1px solid #e0e0e0;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .view-all-link {
+            font-size: 0.9rem;
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .view-all-link:hover {
+            color: #333;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .thumbnail {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .thumbnail:hover {
+            border-color: #1a1a1a;
+            transform: scale(1.05);
+        }
+
+        /* Details Section */
+        .details-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .detail-row {
+            display: flex;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            width: 150px;
+            color: #666;
+        }
+
+        .detail-value {
+            flex: 1;
+            color: #333;
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            padding: 0.4rem 0.8rem;
+            background-color: #f0f0f0;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        /* Team Section */
+        .team-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .team-members {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .team-member {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .team-member:hover {
+            background-color: #f5f5f5;
+        }
+
+        .member-avatar {
+            width: 50px;
+            height: 50px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .member-info {
+            flex: 1;
+        }
+
+        .member-name {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .member-role {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .member-contact {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .member-contact:hover {
+            color: #333;
+        }
+
+        /* Activity Feed */
+        .activity-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .activity-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            margin-bottom: 0.3rem;
+        }
+
+        .activity-author {
+            font-weight: 600;
+        }
+
+        .activity-time {
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        /* Files Section */
+        .files-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .files-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+
+        .file-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #e3f2fd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .file-meta {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .file-size {
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        /* Location Map */
+        .map-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .location-details {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .location-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+        }
+
+        .location-label {
+            color: #666;
+        }
+
+        .location-value {
+            font-weight: 500;
+        }
+
+        /* 3D Model Viewer */
+        .model-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .model-viewer {
+            width: 100%;
+            height: 400px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Findings Section */
+        .findings-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .findings-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .finding-card {
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .finding-card:hover {
+            border-color: #1a1a1a;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .finding-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .finding-content {
+            padding: 1rem;
+        }
+
+        .finding-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .finding-description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Progress Section */
+        .progress-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .progress-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-label {
+            font-weight: 500;
+        }
+
+        .progress-value {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Timeline */
+        .timeline-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            bottom: -6px;
+            width: 2px;
+            background-color: #e0e0e0;
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 14px;
+            height: 14px;
+            background-color: #667eea;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #667eea;
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            color: #999;
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .timeline-description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .findings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .project-header-top {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .project-title-section h1 {
+                font-size: 2rem;
+            }
+
+            .project-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .thumbnail-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">ArcheoHub</a>
+            <ul class="nav-links">
+                <li><a href="Index.html">Dashboard</a></li>
+                <li><a href="Index.html" data-page="projects">Projects</a></li>
+                <li><a href="Index.html">People</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="user-icon">D</div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Back Button -->
+        <a href="Index.html" class="back-link">← Back to Projects</a>
+
+        <!-- Project Header -->
+        <div class="project-header">
+            <div class="project-header-top">
+                <div class="project-title-section">
+                    <h1>Duisenburghaus</h1>
+                    <div class="project-meta">
+                        <div class="meta-item">
+                            <span>📍</span>
+                            <span>Niedersachsen, Germany</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>📅</span>
+                            <span>Started: Dezember 22, 2025</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>👥</span>
+                            <span>1 Team Member</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <span class="status-badge status-active">Active</span>
+                </div>
+            </div>
+
+            <p class="project-description">
+                Das ist eine laufende archäologische Ausgrabung eines Bronze Feldes in Lingen, Niedersachsen. Das Projekt zielt darauf ab, die Überreste zu dokumentieren, Artefakte zu bergen und die Geschichte der Lingener Präsenz in der Region zu erforschen. Das Team verwendet moderne Techniken wie 3D-Scans und digitale Fotografie, um die Funde zu analysieren und zu bewahren.
+            </p>
+
+            <div class="project-stats">
+                <div class="stat-box">
+                    <div class="stat-value">23</div>
+                    <div class="stat-label">Artifacts Found</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Photos Uploaded</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">1</div>
+                    <div class="stat-label">3D Models</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Team Members</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <!-- Main Content -->
+            <div>
+                <!-- Gallery -->
+                <div class="gallery-section">
+                    <div class="section-title">
+                        <span>Photo Gallery</span>
+                        <a href="#" class="view-all-link">View All (4) →</a>
+                    </div>
+                    <img src="shared image.jpg" alt="Main excavation site" class="main-image">
+                    <div class="thumbnail-grid">
+                        <img src="archaeologie-d-425396626.jpg" alt="Thumbnail 1" class="thumbnail">
+                        <img src="foto3.jpg" alt="Thumbnail 2" class="thumbnail">
+                        <img src="shared image.jpg" alt="Thumbnail 3" class="thumbnail">
+                        <img src="foto2.jpeg" alt="Thumbnail 4" class="thumbnail">
+                    </div>
+                </div>
+
+                <!-- 3D Model Viewer -->
+                <div class="model-section">
+                    <div class="section-title">
+                        <span>3D Models</span>
+                        <a href="3d-model-viewer.html" class="view-all-link">View All (1) →</a>
+                    </div>
+                    <div class="model-viewer">
+                        🎲 3D Model Viewer - Interactive 3D model would be displayed here
+                    </div>
+                </div>
+
+              
+
+                <!-- Files & Documents -->
+                <div class="files-section">
+                    <div class="section-title">
+                        <span>Files & Documents</span>
+                        <a href="#" class="view-all-link">View All →</a>
+                    </div>
+                    <div class="files-list">
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-info">
+                                <div class="file-name">Excavation Report - Week 8.pdf</div>
+                                <div class="file-meta">Added 23 day ago by Dr. Maria Santos</div>
+                            </div>
+                            <div class="file-size">2.4 MB</div>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">📊</div>
+                            <div class="file-info">
+                                <div class="file-name">Artifact Catalog - Dezember 2025.xlsx</div>
+                                <div class="file-meta">Added 21 days ago by Dr. Dieter Lammers</div>
+                            </div>
+                            <div class="file-size">856 KB</div>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">🎲</div>
+                            <div class="file-info">
+                                <div class="file-name">Mosaic_3D_Scan.obj</div>
+                                <div class="file-meta">Added 30 days ago by Dr. Dieter Lammers</div>
+                            </div>
+                            <div class="file-size">45.2 MB</div>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-info">
+                                <div class="file-name">Safety Guidelines.pdf</div>
+                                <div class="file-meta">Added 9 days ago by Dr. Dieter Lammers</div>
+                            </div>  
+
+
+
+                            <div class="file-size">1.1 MB</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                                        </div>
+                        <div class="file-size">1.1 MB</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+
+            <!-- Project Details -->
+            <div class="details-section">
+                <div class="section-title">
+                    <span>Project Details</span>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Project ID</div>
+                    <div class="detail-value">ARV-2024-01</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Category</div>
+                    <div class="detail-value">Lingen Archaeology</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Period</div>
+                    <div class="detail-value">2025</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Status</div>
+                    <div class="detail-value">Active Excavation</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Tags</div>
+                    <div class="detail-value">
+                        <div class="tags">
+                            <span class="tag">Baccum Bronzefeld</span>
+                            <span class="tag">Steine</span>
+                            
+                            <span class="tag">3D Scans</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location -->
+            <div class="map-section">
+                <div class="section-title">
+                    <span>Location</span>
+                </div>
+
+                <div class="map-placeholder">
+                    📍 Interactive Map Placeholder
+                </div>
+
+                <div class="location-details">
+                    <div class="location-row">
+                        <span class="location-label">Country</span>
+                        <span class="location-value">Germany</span>
+                    </div>
+                    <div class="location-row">
+                        <span class="location-label">Region</span>
+                        <span class="location-value">Niedersachsen</span>
+                    </div>
+                    <div class="location-row">
+                        <span class="location-label">City</span>
+                        <span class="location-value">Lingen</span>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            
+
+        </div>
+    </div>
+</main>
+
+</body>
+</html>
